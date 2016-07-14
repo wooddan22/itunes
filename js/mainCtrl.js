@@ -5,6 +5,7 @@ angular.module('itunes').controller('mainCtrl', function($scope, itunesService){
   $scope.gridOptions = { 
       data: 'songData',
       height: '110px',
+      enableFiltering: true,
       sortInfo: {fields: ['Song', 'Artist', 'Collection', 'Type'], directions: ['asc']},
       columnDefs: [
         {field: 'Play', displayName: 'Play', width: '40px', cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a href="{{row.getProperty(col.field)}}"><img src="http://www.icty.org/x/image/Miscellaneous/play_icon30x30.png"></a></div>'},
@@ -13,6 +14,7 @@ angular.module('itunes').controller('mainCtrl', function($scope, itunesService){
         {field: 'AlbumArt', displayName: 'Album Art', width: '110px', cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><img src="{{row.getProperty(col.field)}}"></div>'},
         {field: 'Type', displayName: 'Type'},
         {field: 'CollectionPrice', displayName: 'Collection Price'},
+        {field: 'Genre', displayName: 'Genre'},
       ]
   };
 
@@ -27,7 +29,14 @@ angular.module('itunes').controller('mainCtrl', function($scope, itunesService){
   //*remember, that method should be expecting an artist name. The artist name is coming from the input box on index.html, head over there and check if that input box is tied to any specific model we could use.
   //Also note that that method should be retuning a promise, so you could use .then in this function.
     
-    //Code here
+   $scope.getSongData = function(name) {
+     itunesService.getArtist(name).then(function(response) {
+       $scope.songData = response;
+       console.log($scope.gridOptions);
+     })
+   }
+
+ 
 
 
   //Check that the above method is working by entering a name into the input field on your web app, and then console.log the result
